@@ -6,6 +6,9 @@ DEFAULT_CITY = "Seattle"
 GEO_URL = "https://geocoding-api.open-meteo.com/v1/search"
 WX_URL  = "https://api.open-meteo.com/v1/forecast"
 
+def f_to_c(f):
+    return (f - 32) * 5/9
+
 # ----- weather code map -----
 WMO = {
     0: "Clear sky", 1: "Mainly clear", 2: "Partly cloudy", 3: "Overcast",
@@ -29,7 +32,10 @@ def fail(msg: str, code: int = 1):
     raise SystemExit(code)
 
 def main():
-    city = " ".join(sys.argv[1:]).strip() or DEFAULT_CITY
+    raw = " ".join(sys.argv[1:]).strip()
+    raw = raw.split("#", 1)[0].strip()   # ignore accidental comments
+    city = raw or DEFAULT_CITY
+    unit = input("Unit (c/f)? ").strip().lower() or "f"
 
     # --- geocode ---
     try:
@@ -64,8 +70,15 @@ def main():
     except requests.RequestException as e:
         fail(f"Network error (weather): {e}")
 
-    print(f"{pretty_name}: {temp_f:.1f}°F, {wmo_to_text(code)}")
+    # --- convert + print ---
+    if unit == "c":
+        temp = f_to_c(temp_f)
+        suffix = "°C"
+    else:
+        temp = temp_f
+        suffix = "°F"
+
+    print(f"{pretty_name}: {temp:.1f}{suffix}, {wmo_to_text(code)}")
 
 if __name__ == "__main__":
     main()
-
