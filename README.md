@@ -1,11 +1,10 @@
 # Weatherlite
 
-Minimal CLI weather app (v0).
+A minimal CLI weather checker using the free Open-Meteo API (no API key).
 
-## Quick start
+## Usage
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt  # if you have one
-python main.py "Seattle"
+python3 main.py "Seattle"     # or any city name
+python3 main.py               # defaults to Seattle
+
 
