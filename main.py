@@ -83,11 +83,11 @@ def main():
     print(f"{pretty_name}: {temp:.1f}{suffix}, {wmo_to_text(code)}")
 
     # Timestamp (prefer API time; fallback to local)
-    # Timestamp (prefer API time; fallback to local)
     as_of = wx.get("time") if isinstance(wx.get("time"), str) else None
     if not as_of:
-        s_of = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M %Z")
+        as_of = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M %Z")
     print(f"As of {as_of}")
+
 
 
 if __name__ == "__main__":
